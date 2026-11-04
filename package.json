@@ -1,0 +1,62 @@
+{
+  "name": "coiffure-s",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Coiffure S – site, réservation en ligne et administration du salon (Grand-Lancy, Genève)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "reminders": "tsx scripts/send-reminders.mts",
+    "test:integration": "DATABASE_URL=file:./test.db prisma db push --skip-generate && DATABASE_URL=file:./test-pos.db prisma db push --skip-generate && DATABASE_URL=file:./test-loyalty.db prisma db push --skip-generate && DATABASE_URL=file:./test-subs.db prisma db push --skip-generate && DATABASE_URL=file:./test-compliance.db prisma db push --skip-generate && tsx --test tests/integration/*.test.mts",
+    "logo": "node scripts/process-logo.mjs && node scripts/make-icons.mjs",
+    "backup:now": "tsx scripts/backup.mts now",
+    "backup:restore": "tsx scripts/backup.mts restore",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "jose": "^6.2.12",
+    "lucide-react": "^1.49.0",
+    "luxon": "^3.7.2",
+    "next": "^15.5.27",
+    "nodemailer": "^10.0.13",
+    "pdf-lib": "^1.17.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
+    "stripe": "^23.0.0",
+    "web-push": "^3.6.7",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^26.6.4",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/web-push": "^3.6.4",
+    "postcss": "^8.5.28",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

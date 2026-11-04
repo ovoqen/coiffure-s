@@ -1,0 +1,13 @@
+# HTTPS automatique pour votre domaine (variables DOMAIN et DOMAIN_WWW du fichier .env)
+{$DOMAIN} {
+	encode zstd gzip
+	request_body {
+		max_size 25MB
+	}
+	reverse_proxy web:3000
+}
+
+# Redirige www.votre-domaine.ch vers votre-domaine.ch
+{$DOMAIN_WWW} {
+	redir https://{$DOMAIN}{uri} permanent
+}

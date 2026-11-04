@@ -1,0 +1,41 @@
+# ---------------------------------------------------------------
+#  Coiffure S – production sur votre propre serveur
+#  Démarrage :  docker compose up -d --build
+#  - "web"   : le site (Next.js), jamais exposé directement à Internet
+#  - "caddy" : HTTPS automatique (certificat Let's Encrypt) pour votre nom de domaine
+#  Les secrets sont lus depuis .env (jamais dans l'image).
+# ---------------------------------------------------------------
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: file:/data/coiffure-s.db
+      UPLOAD_DIR: /data/uploads
+      PRIVATE_DIR: /data/private
+      BACKUP_DIR: /data/backups
+      TRUSTED_PROXY_HOPS: "1"
+    expose:
+      - "3000"
+    volumes:
+      - coiffure-data:/data
+
+  caddy:
+    image: caddy:2.8.4
+    restart: unless-stopped
+    depends_on:
+      - web
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  coiffure-data:
+  caddy-data:
+  caddy-config:
